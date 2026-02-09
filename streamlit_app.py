@@ -1,3 +1,4 @@
+from huggingface_hub import hf_hub_download
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,6 +10,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.ensemble import RandomForestRegressor
 import joblib
 import os
+from huggingface_hub import hf_hub_download
 
 st.title("Stabilité thermique du four — LafargeHolcim - ECC")
 
@@ -19,9 +21,15 @@ st.title("Stabilité thermique du four — LafargeHolcim - ECC")
 
 @st.cache_resource
 def load_models():
-    mmin = joblib.load("pci_min_model.joblib")
-    mmax = joblib.load("pci_max_model.joblib")
-    return mmin, mmax
+    min_path = hf_hub_download(
+        repo_id="abougdira/pci-interval-models",
+        filename="pci_min_model.joblib",
+    )
+    max_path = hf_hub_download(
+        repo_id="abougdira/pci-interval-models",
+        filename="pci_max_model.joblib",
+    )
+    return joblib.load(min_path), joblib.load(max_path)
 
 
 with st.sidebar:
