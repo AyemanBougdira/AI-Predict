@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
-COPY src/ ./src/
+
+COPY . .
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=7860", "--server.address=0.0.0.0"]
 
 RUN pip3 install -r requirements.txt
 
